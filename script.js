@@ -17,23 +17,23 @@ const gameBoard = (() => {
     const startGame = (nameOne, nameTwo) => {
         playerOne = createPlayer(nameOne, "O");
         playerTwo = createPlayer(nameTwo, "X");
-        displayBoard(nameOne, nameTwo);
+        displayController.displayGame(playerOne, playerTwo);
     }
 
     const checkWinCondition = (player) => {
 
     }
-    return(startGame, checkWinCondition)
+    return{startGame, checkWinCondition}
 })();
 
 const displayController = (() => {
 
     const board = [];
-    const gameContainer = document.querySelector('.gameContainer');
+    const gameContainer = document.querySelector('.game-container');
 
     const createBoard = () => {
         let boardContainer = document.createElement('div');
-        boardContainer.classList.add("boardContainer");
+        boardContainer.classList.add("board-container");
         for(let i=0; i<3; i++){
             let row = [];
             for(let j=0; j<3; j++){
@@ -45,10 +45,32 @@ const displayController = (() => {
             }
             board.push(row);
         }
-        gameContainer.appendChild(boardContainer);
+        return boardContainer;
     }
-    const displayBoard = (nameOne, nameTwo) => {
-        let boardContainer = createBoard();
+    const createPlayer = (name, marker) => {
+        const playerContainer = document.createElement('div');
+        const nameContainer = document.createElement('div');
+        const markerContainer = document.createElement('div');
+
+        playerContainer.classList.add('player-container');
+        nameContainer.classList.add('name-container');
+        markerContainer.classList.add('marker-container');
+
+        nameContainer.textContent = name;
+        markerContainer.textContent = marker;
+
+        playerContainer.appendChild(nameContainer);
+        playerContainer.appendChild(markerContainer);
+
+        return playerContainer;
+    }
+    const displayGame = (playerOne, playerTwo) => {
+        const playerOneDisplay = createPlayer(playerOne.name, playerOne.marker);
+        const playerTwoDisplay = createPlayer(playerTwo.name, playerTwo.marker);
+        const boardContainer = createBoard();
+        gameContainer.appendChild(playerOneDisplay);
+        gameContainer.appendChild(boardContainer);
+        gameContainer.appendChild(playerTwoDisplay);
     }
     const displayMarker = (field, player) => {
 
@@ -56,6 +78,6 @@ const displayController = (() => {
     const clearBoard = () => {
 
     }
-    return {createBoard, displayBoard, displayMarker, clearBoard};
+    return {createBoard, displayGame, displayMarker, clearBoard};
 })();
 

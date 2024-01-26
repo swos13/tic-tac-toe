@@ -9,13 +9,13 @@ header {
     text-align: center;
 }
 
-.gameContainer {
+.game-container {
     flex: 1;
     display: flex;
     justify-content: center;
 }
 
-.boardContainer {
+.board-container {
     min-width: 360px;
     max-width: 360px;
     max-height: 360px;
