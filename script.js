@@ -1,11 +1,7 @@
 function createPlayer (name, marker) {
     this.name = name;
     this.marker = marker;
-
-    const makeMove = () => {
-
-    }
-    return {name, marker, makeMove}
+    return {name, marker}
 }
 
 const gameBoard = (() => {
@@ -13,17 +9,24 @@ const gameBoard = (() => {
     const board = [["","",""], ["","",""], ["","",""]]
     let playerOne;
     let playerTwo;
+    let whoseTurn = 'o';
 
     const startGame = (nameOne, nameTwo) => {
         playerOne = createPlayer(nameOne, "O");
         playerTwo = createPlayer(nameTwo, "X");
         displayController.displayGame(playerOne, playerTwo);
     }
-
+    const makeMove = (event) => {
+        const firstCoordinate = parseInt(event.currentTarget.id[0])-1;
+        const secondCoordinate = parseInt(event.currentTarget.id[1])-1;
+        displayController.displayMarker(firstCoordinate, secondCoordinate, whoseTurn);
+        board[firstCoordinate][secondCoordinate] = whoseTurn;
+        whoseTurn = whoseTurn == 'o' ? 'x' : 'o';
+    }
     const checkWinCondition = (player) => {
 
     }
-    return{startGame, checkWinCondition}
+    return{startGame, makeMove, checkWinCondition}
 })();
 
 const displayController = (() => {
@@ -40,6 +43,7 @@ const displayController = (() => {
                 let field = document.createElement('div');
                 field.id = `${i+1}${j+1}`;
                 field.classList.add("field");
+                field.addEventListener('click', gameBoard.makeMove);
                 boardContainer.appendChild(field);
                 row.push(field);
             }
@@ -72,12 +76,14 @@ const displayController = (() => {
         gameContainer.appendChild(boardContainer);
         gameContainer.appendChild(playerTwoDisplay);
     }
-    const displayMarker = (field, player) => {
-
+    const displayMarker = (firstCoordinate, secondCoordinate, marker) => {
+        const field = board[firstCoordinate][secondCoordinate];
+        field.textContent = marker;
+        field.style.pointerEvents = "none";
     }
     const clearBoard = () => {
 
     }
-    return {createBoard, displayGame, displayMarker, clearBoard};
+    return {board, createBoard, displayGame, displayMarker, clearBoard};
 })();
 
