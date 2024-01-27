@@ -17,14 +17,40 @@ const gameBoard = (() => {
         displayController.displayGame(playerOne, playerTwo);
     }
     const makeMove = (event) => {
-        const firstCoordinate = parseInt(event.currentTarget.id[0])-1;
-        const secondCoordinate = parseInt(event.currentTarget.id[1])-1;
+        const firstCoordinate = parseInt(event.currentTarget.id[0]);
+        const secondCoordinate = parseInt(event.currentTarget.id[1]);
         displayController.displayMarker(firstCoordinate, secondCoordinate, whoseTurn);
         board[firstCoordinate][secondCoordinate] = whoseTurn;
+        if(checkWinCondition(whoseTurn,firstCoordinate,secondCoordinate))
+            console.log(`${whoseTurn} won!`);
         whoseTurn = whoseTurn == 'o' ? 'x' : 'o';
     }
-    const checkWinCondition = (player) => {
-
+    const checkWinCondition = (marker, firstCoordinate, secondCoordinate) => {
+        const possibleWinCombinations = [[[0,0],[0,1],[0,2]],[[1,0],[1,1],[1,2]],[[2,0],[2,1],[2,2]],
+                                         [[0,0],[1,0],[2,0]],[[0,1],[1,1],[2,1]],[[0,2],[1,2],[2,2]],
+                                         [[0,0],[1,1],[2,2]],[[2,0],[1,1],[0,2]]];
+        const linesToCheck = possibleWinCombinations.filter((line) => {
+            let contains = false;
+            line.forEach((field) => {
+                if(field[0] == firstCoordinate && field[1] == secondCoordinate)
+                    contains = true; 
+            })
+            return contains;
+        });
+        let win = false;
+        let winningLine = null;
+        linesToCheck.forEach((line) => {
+            let areTheSame = true;
+            line.forEach((field) => {
+                if(board[field[0]][field[1]] != marker)
+                    areTheSame = false;
+            })
+            if(areTheSame){
+                win = true;
+                winningLine = line;
+            }
+        })
+        return win;
     }
     return{startGame, makeMove, checkWinCondition}
 })();
@@ -41,7 +67,7 @@ const displayController = (() => {
             let row = [];
             for(let j=0; j<3; j++){
                 let field = document.createElement('div');
-                field.id = `${i+1}${j+1}`;
+                field.id = `${i}${j}`;
                 field.classList.add("field");
                 field.addEventListener('click', gameBoard.makeMove);
                 boardContainer.appendChild(field);
