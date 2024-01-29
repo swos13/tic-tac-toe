@@ -66,8 +66,31 @@ body {
 
 .game-container {
     flex: 1;
-    display: flex;
+    display: grid;
+    grid-template-columns: calc(50% - 188px) 366px calc(50% - 188px);
     justify-content: center;
+    gap: 36px;
+}
+
+.game-container > .player-container:first-of-type {
+    justify-self: end;
+}
+
+.game-container > .player-container:last-of-type {
+    justify-self: start;
+}
+
+.player-container {
+    font-size: 2.5rem;
+}
+
+.name-container {
+    height: 5rem;
+    word-wrap: break-word;
+}
+
+.marker-container {
+    text-align: center;
 }
 
 .board-container {
