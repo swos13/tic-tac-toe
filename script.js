@@ -4,7 +4,7 @@ function createPlayer(name, marker) {
     return {name, marker}
 }
 
-const gameBoard = (() => {
+const game = (() => {
 
     let board;
     let whoseTurn;
@@ -60,7 +60,7 @@ const gameBoard = (() => {
         })
         return winningLine;
     }
-    return{startGame, makeMove, checkWinCondition}
+    return{startGame, makeMove}
 })();
 
 const displayController = (() => {
@@ -68,15 +68,14 @@ const displayController = (() => {
     let board = [];
     const gameContainer = document.querySelector('.game-container');
 
-    const setup = () => {
+    const setUp = () => {
         const newButton = document.querySelector(".new");
         const nameOneInput = document.querySelector("#name-one");
         const nameTwoInput = document.querySelector("#name-two");
         newButton.addEventListener('click', () => {
-            gameBoard.startGame(nameOneInput.value, nameTwoInput.value);
+            game.startGame(nameOneInput.value, nameTwoInput.value);
         })
     }
-
     const createBoard = () => {
         if(board.length != 0)
             clearBoard();
@@ -88,7 +87,7 @@ const displayController = (() => {
                 let field = document.createElement('div');
                 field.id = `${i}${j}`;
                 field.classList.add("field");
-                field.addEventListener('click', gameBoard.makeMove);
+                field.addEventListener('click', game.makeMove);
                 boardContainer.appendChild(field);
                 row.push(field);
             }
@@ -135,7 +134,7 @@ const displayController = (() => {
         while(gameContainer.firstChild)
             gameContainer.removeChild(gameContainer.lastChild);
     }
-    return {board, setup, createBoard, displayGame, displayMarker, displayEndMessage, clearBoard};
+    return {setUp, displayGame, displayMarker, displayEndMessage};
 })();
 
-displayController.setup();
+displayController.setUp();
