@@ -7,11 +7,12 @@ function createPlayer(name, marker) {
 const gameBoard = (() => {
 
     let board;
-    let whoseTurn = 'o';
+    let whoseTurn;
     let turn;
 
     const startGame = (nameOne, nameTwo) => {
         board = [["","",""], ["","",""], ["","",""]]
+        whoseTurn = 'o';
         turn = 0;
         if(nameOne.trim() == "")
             nameOne = "Player 1";
