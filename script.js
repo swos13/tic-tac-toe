@@ -6,19 +6,19 @@ function createPlayer(name, marker) {
 
 const gameBoard = (() => {
 
-    const board = [["","",""], ["","",""], ["","",""]]
-    let playerOne;
-    let playerTwo;
+    let board;
     let whoseTurn = 'o';
-    let turn = 0;
+    let turn;
 
     const startGame = (nameOne, nameTwo) => {
+        board = [["","",""], ["","",""], ["","",""]]
+        turn = 0;
         if(nameOne.trim() == "")
             nameOne = "Player 1";
         if(nameTwo.trim() == "")
             nameTwo = "Player 2";
-        playerOne = createPlayer(nameOne, "O");
-        playerTwo = createPlayer(nameTwo, "X");
+        const playerOne = createPlayer(nameOne, "O");
+        const playerTwo = createPlayer(nameTwo, "X");
         displayController.displayGame(playerOne, playerTwo);
     }
     const makeMove = (event) => {
@@ -64,14 +64,14 @@ const gameBoard = (() => {
 
 const displayController = (() => {
 
-    const board = [];
+    let board = [];
     const gameContainer = document.querySelector('.game-container');
 
     const setup = () => {
-        const startButton = document.querySelector(".start");
+        const newButton = document.querySelector(".new");
         const nameOneInput = document.querySelector("#name-one");
         const nameTwoInput = document.querySelector("#name-two");
-        startButton.addEventListener('click', () => {
+        newButton.addEventListener('click', () => {
             gameBoard.startGame(nameOneInput.value, nameTwoInput.value);
         })
     }
@@ -131,7 +131,7 @@ const displayController = (() => {
     }
     const clearBoard = () => {
         board = [];
-        while(gameContainer.hasChildNodes)
+        while(gameContainer.firstChild)
             gameContainer.removeChild(gameContainer.lastChild);
     }
     return {board, setup, createBoard, displayGame, displayMarker, displayEndMessage, clearBoard};
