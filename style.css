@@ -5,8 +5,12 @@ body {
     flex-direction: column;
 }
 
-header {
+.header {
     text-align: center;
+}
+
+.result-message {
+    height: 32px;
 }
 
 .game-container {

@@ -1,4 +1,4 @@
-function createPlayer (name, marker) {
+function createPlayer(name, marker) {
     this.name = name;
     this.marker = marker;
     return {name, marker}
@@ -10,8 +10,13 @@ const gameBoard = (() => {
     let playerOne;
     let playerTwo;
     let whoseTurn = 'o';
+    let turn = 0;
 
     const startGame = (nameOne, nameTwo) => {
+        if(nameOne.trim() == "")
+            nameOne = "Player 1";
+        if(nameTwo.trim() == "")
+            nameTwo = "Player 2";
         playerOne = createPlayer(nameOne, "O");
         playerTwo = createPlayer(nameTwo, "X");
         displayController.displayGame(playerOne, playerTwo);
@@ -21,8 +26,13 @@ const gameBoard = (() => {
         const secondCoordinate = parseInt(event.currentTarget.id[1]);
         displayController.displayMarker(firstCoordinate, secondCoordinate, whoseTurn);
         board[firstCoordinate][secondCoordinate] = whoseTurn;
-        if(checkWinCondition(whoseTurn,firstCoordinate,secondCoordinate))
-            console.log(`${whoseTurn} won!`);
+        turn++;
+        if(checkWinCondition(whoseTurn,firstCoordinate,secondCoordinate) != null){
+            displayController.displayEndMessage(`${whoseTurn} won!`);
+        }
+        else if(turn == 9){
+            displayController.displayEndMessage(`It's a draw!`);
+        }
         whoseTurn = whoseTurn == 'o' ? 'x' : 'o';
     }
     const checkWinCondition = (marker, firstCoordinate, secondCoordinate) => {
@@ -37,7 +47,6 @@ const gameBoard = (() => {
             })
             return contains;
         });
-        let win = false;
         let winningLine = null;
         linesToCheck.forEach((line) => {
             let areTheSame = true;
@@ -45,12 +54,10 @@ const gameBoard = (() => {
                 if(board[field[0]][field[1]] != marker)
                     areTheSame = false;
             })
-            if(areTheSame){
-                win = true;
+            if(areTheSame)
                 winningLine = line;
-            }
         })
-        return win;
+        return winningLine;
     }
     return{startGame, makeMove, checkWinCondition}
 })();
@@ -60,7 +67,18 @@ const displayController = (() => {
     const board = [];
     const gameContainer = document.querySelector('.game-container');
 
+    const setup = () => {
+        const startButton = document.querySelector(".start");
+        const nameOneInput = document.querySelector("#name-one");
+        const nameTwoInput = document.querySelector("#name-two");
+        startButton.addEventListener('click', () => {
+            gameBoard.startGame(nameOneInput.value, nameTwoInput.value);
+        })
+    }
+
     const createBoard = () => {
+        if(board.length != 0)
+            clearBoard();
         let boardContainer = document.createElement('div');
         boardContainer.classList.add("board-container");
         for(let i=0; i<3; i++){
@@ -107,9 +125,16 @@ const displayController = (() => {
         field.textContent = marker;
         field.style.pointerEvents = "none";
     }
-    const clearBoard = () => {
-
+    const displayEndMessage = (text) => {
+        const message = document.querySelector('.result-message');
+        message.textContent = text;
     }
-    return {board, createBoard, displayGame, displayMarker, clearBoard};
+    const clearBoard = () => {
+        board = [];
+        while(gameContainer.hasChildNodes)
+            gameContainer.removeChild(gameContainer.lastChild);
+    }
+    return {board, setup, createBoard, displayGame, displayMarker, displayEndMessage, clearBoard};
 })();
 
+displayController.setup();

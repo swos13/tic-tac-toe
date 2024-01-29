@@ -7,10 +7,24 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <header>
-        <h1>Tic Tac Toe</h1>
-    </header>
     <script src="./script.js" defer></script>
+    <div class="header">
+        <h1>Tic Tac Toe</h1>
+        <span class="result-message"></span>
+        <ul class="names">
+            <li>
+                <label for="name-one">Player one name:</label>
+                <input type="text" id="name-one">
+            </li>
+            <li>
+                <label for="name-two">Player two name:</label>
+                <input type="text" id="name-two">
+            </li>
+        </ul>
+        <div class="buttons">
+            <button class="start">Start game</button>
+        </div>
+    </div>
     <div class="game-container">
         
     </div>
