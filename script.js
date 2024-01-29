@@ -12,7 +12,7 @@ const game = (() => {
 
     const startGame = (nameOne, nameTwo) => {
         board = [["","",""], ["","",""], ["","",""]]
-        whoseTurn = 'o';
+        whoseTurn = 'O';
         turn = 0;
         if(nameOne.trim() == "")
             nameOne = "Player 1";
@@ -34,7 +34,7 @@ const game = (() => {
         else if(turn == 9){
             displayController.displayEndMessage(`It's a draw!`);
         }
-        whoseTurn = whoseTurn == 'o' ? 'x' : 'o';
+        whoseTurn = whoseTurn == 'O' ? 'X' : 'O';
     }
     const checkWinCondition = (marker, firstCoordinate, secondCoordinate) => {
         const possibleWinCombinations = [[[0,0],[0,1],[0,2]],[[1,0],[1,1],[1,2]],[[2,0],[2,1],[2,2]],

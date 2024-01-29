@@ -1,4 +1,10 @@
+@font-face {
+    font-family: Roboto;
+    src: ("./Roboto-Regular.woff");
+}
+
 body {
+    font-family: Roboto, Helvetica, Sans-serif;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -30,5 +36,10 @@ body {
 }
 
 .field {
-    border: 1px solid black
+    border: 1px solid black;
+    font-size: 96px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
