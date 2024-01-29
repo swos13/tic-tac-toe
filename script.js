@@ -9,6 +9,8 @@ const game = (() => {
     let board;
     let whoseTurn;
     let turn;
+    let playerOne;
+    let playerTwo;
 
     const startGame = (nameOne, nameTwo) => {
         board = [["","",""], ["","",""], ["","",""]]
@@ -18,9 +20,10 @@ const game = (() => {
             nameOne = "Player 1";
         if(nameTwo.trim() == "")
             nameTwo = "Player 2";
-        const playerOne = createPlayer(nameOne, "O");
-        const playerTwo = createPlayer(nameTwo, "X");
+        playerOne = createPlayer(nameOne, "O");
+        playerTwo = createPlayer(nameTwo, "X");
         displayController.displayGame(playerOne, playerTwo);
+        displayController.displayMessage(`${playerOne.name} turn`);
     }
     const makeMove = (event) => {
         const firstCoordinate = parseInt(event.currentTarget.id[0]);
@@ -29,12 +32,20 @@ const game = (() => {
         board[firstCoordinate][secondCoordinate] = whoseTurn;
         turn++;
         if(checkWinCondition(whoseTurn,firstCoordinate,secondCoordinate) != null){
-            displayController.displayEndMessage(`${whoseTurn} won!`);
+            let winnerName = whoseTurn == playerOne.name ? playerOne.name : playerTwo.name;
+            displayController.displayMessage(`${winnerName} won!`);
         }
         else if(turn == 9){
-            displayController.displayEndMessage(`It's a draw!`);
+            displayController.displayMessage(`It's a draw!`);
         }
-        whoseTurn = whoseTurn == 'O' ? 'X' : 'O';
+        else if(whoseTurn == 'O'){
+            displayController.displayMessage(`${playerTwo.name} turn`);
+            whoseTurn = 'X';
+        }
+        else{
+            displayController.displayMessage(`${playerOne.name} turn`);
+            whoseTurn = 'O';
+        }
     }
     const checkWinCondition = (marker, firstCoordinate, secondCoordinate) => {
         const possibleWinCombinations = [[[0,0],[0,1],[0,2]],[[1,0],[1,1],[1,2]],[[2,0],[2,1],[2,2]],
@@ -67,6 +78,7 @@ const displayController = (() => {
 
     let board = [];
     const gameContainer = document.querySelector('.game-container');
+    const messageDisplay = document.querySelector('.message'); 
 
     const setUp = () => {
         const newButton = document.querySelector(".new");
@@ -125,16 +137,15 @@ const displayController = (() => {
         field.textContent = marker;
         field.style.pointerEvents = "none";
     }
-    const displayEndMessage = (text) => {
-        const message = document.querySelector('.result-message');
-        message.textContent = text;
+    const displayMessage = (text) => {
+        messageDisplay.textContent = text;
     }
     const clearBoard = () => {
         board = [];
         while(gameContainer.firstChild)
             gameContainer.removeChild(gameContainer.lastChild);
     }
-    return {setUp, displayGame, displayMarker, displayEndMessage};
+    return {setUp, displayGame, displayMarker, displayMessage};
 })();
 
 displayController.setUp();

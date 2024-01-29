@@ -59,6 +59,11 @@ body {
     background-color: #bebebe;
 }
 
+.message {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
 .game-container {
     flex: 1;
     display: flex;
