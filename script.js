@@ -34,6 +34,7 @@ const game = (() => {
         if(checkWinCondition(whoseTurn,firstCoordinate,secondCoordinate) != null){
             let winnerName = whoseTurn == playerOne.name ? playerOne.name : playerTwo.name;
             displayController.displayMessage(`${winnerName} won!`);
+            displayController.disableBoard();
         }
         else if(turn == 9){
             displayController.displayMessage(`It's a draw!`);
@@ -145,7 +146,14 @@ const displayController = (() => {
         while(gameContainer.firstChild)
             gameContainer.removeChild(gameContainer.lastChild);
     }
-    return {setUp, displayGame, displayMarker, displayMessage};
+    const disableBoard = () => {
+        for(let i=0; i<3; i++){
+            for(let j=0; j<3; j++){
+                board[i][j].style.pointerEvents = "none";
+            }
+        }
+    }
+    return {setUp, displayGame, displayMarker, displayMessage, disableBoard};
 })();
 
 displayController.setUp();
