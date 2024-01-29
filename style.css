@@ -1,4 +1,10 @@
+@font-face {
+    font-family: Roboto;
+    src: ("./Roboto-Regular.woff");
+}
+
 body {
+    font-family: Roboto, Helvetica, Sans-serif;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -7,16 +13,84 @@ body {
 
 .header {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .result-message {
     height: 32px;
 }
 
-.game-container {
-    flex: 1;
+.header > ul {
+    list-style: none;
+    padding: 0;
     display: flex;
     justify-content: center;
+    gap: 24px;
+}
+
+.names > li {
+    display: flex;
+    flex-direction: column;
+}
+
+.names > li > input {
+    font-size: 1.0rem;
+    margin-top: 12px;
+    padding: 0.5rem;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.names input, .new {
+    border: 2px solid #333333;
+    border-radius: 8px;
+}
+
+.header > .new {
+    background-color: white;
+    font-size: 1rem;
+    padding: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.header > .new:active {
+    background-color: #bebebe;
+}
+
+.message {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.game-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: calc(50% - 188px) 366px calc(50% - 188px);
+    justify-content: center;
+    gap: 36px;
+}
+
+.game-container > .player-container:first-of-type {
+    justify-self: end;
+}
+
+.game-container > .player-container:last-of-type {
+    justify-self: start;
+}
+
+.player-container {
+    font-size: 2.5rem;
+}
+
+.name-container {
+    height: 5rem;
+    word-wrap: break-word;
+}
+
+.marker-container {
+    text-align: center;
 }
 
 .board-container {
@@ -30,5 +104,10 @@ body {
 }
 
 .field {
-    border: 1px solid black
+    border: 1px solid black;
+    font-size: 96px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
